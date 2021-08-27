@@ -19,14 +19,13 @@ import com.google.zxing.WriterException;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    SQLiteDataBaseHandler db = new SQLiteDataBaseHandler(MainActivity.this);
+    DaoInventarioImpl db = new DaoInventarioImpl(MainActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +39,20 @@ public class MainActivity extends AppCompatActivity {
         TextInputEditText Precio = (TextInputEditText) findViewById(R.id.TextInputEditText2);
         TextInputEditText Nombre = (TextInputEditText) findViewById(R.id.TextInputEditText3);
 
-        armar(Nombre.getText().toString(), Cantidad.getText().toString(), Precio.getText().toString());
+        CtrlInventario.addInventario(Nombre.getText().toString(),
+                Integer.parseInt(Cantidad.getText().toString()),
+                Float.parseFloat(Precio.getText().toString()),
+                new BOInventario(), db);
 
-        List productos = db.getAllProducts();
-        int max = productos.size() - 1;
-        int id = ((Inventario) productos.get(max)).getId();
-        System.out.println(id);
+        int id = CtrlInventario.retrieveInsertedId(Nombre.getText().toString(),
+                Integer.parseInt(Cantidad.getText().toString()),
+                Float.parseFloat(Precio.getText().toString()),
+                new BOInventario(), db);
 
+        crearQr(id);
+    }
 
+    private Bitmap crearQr(int id){
         Bitmap bitmap = null;
 
         WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -70,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         saveImageStorage(bitmap, x);
 
-
+        return bitmap;
     }
 
     private void saveImageStorage(Bitmap finalBitmap, String name) {
@@ -105,13 +110,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void armarID(){
-
-    }
-
-    private void armar(String Nombre, String Precio, String Cantidad){
-
-        Inventario item = new Inventario(Nombre, Integer.parseInt(Cantidad), Integer.parseInt(Precio));
-
-    }
 }
