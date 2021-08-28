@@ -1,6 +1,8 @@
 package com.example.inventory;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.media.MediaScannerConnection;
@@ -19,9 +21,17 @@ import com.google.zxing.WriterException;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,17 +49,31 @@ public class MainActivity extends AppCompatActivity {
         TextInputEditText Precio = (TextInputEditText) findViewById(R.id.TextInputEditText2);
         TextInputEditText Nombre = (TextInputEditText) findViewById(R.id.TextInputEditText3);
 
-        CtrlInventario.addInventario(Nombre.getText().toString(),
+        Dialog dialog = new Dialog(MainActivity.this);
+
+        String msg = CtrlInventario.addInventario(Nombre.getText().toString(),
                 Integer.parseInt(Cantidad.getText().toString()),
                 Float.parseFloat(Precio.getText().toString()),
                 new BOInventario(), db);
 
-        int id = CtrlInventario.retrieveInsertedId(Nombre.getText().toString(),
-                Integer.parseInt(Cantidad.getText().toString()),
-                Float.parseFloat(Precio.getText().toString()),
-                new BOInventario(), db);
+        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+        if(msg.compareTo("El objeto a ingresar ya existe en el inventario")!=0) {
+            int id = CtrlInventario.retrieveInsertedId(Nombre.getText().toString(),
+                    Integer.parseInt(Cantidad.getText().toString()),
+                    Float.parseFloat(Precio.getText().toString()),
+                    new BOInventario(), db);
 
-        crearQr(id);
+//        Bitmap qr = crearQr(id);
+//
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        qr.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//         byte[] bArray = baos.toByteArray();
+        }
+
+         Cantidad.setText("");
+         Precio.setText("");
+         Nombre.setText("");
+
     }
 
     private Bitmap crearQr(int id){
@@ -73,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Tag", e.toString());
         }
 
-        saveImageStorage(bitmap, x);
+        //saveImageStorage(bitmap, x);
 
         return bitmap;
     }

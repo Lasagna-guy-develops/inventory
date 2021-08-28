@@ -82,11 +82,16 @@ public class DaoInventarioImpl extends SQLiteOpenHelper implements DAOInventario
         if(cursor != null){
             cursor.moveToFirst();
         }
-
+        try{
         Inventario inventory = new Inventario(Integer.parseInt(cursor.getString(0)),cursor.getString(1),
                 cursor.getInt(2),cursor.getFloat(3));
-        db.close();
-        return inventory;
+            db.close();
+        return inventory;}
+        catch(Exception e){
+            db.close();
+            return null;
+        }
+
     }
 
     public List getAllProducts() {

@@ -8,10 +8,12 @@ public class BOInventario{
 
     }
 
-    public String addInventario(Inventario Inventory,DaoInventarioImpl dao){
-        if(Inventory.getName() == dao.getInventario(Inventory.getName()).getName()){
+    public String addInventario(Inventario Inventory,DaoInventarioImpl dao) {
+        Inventario q = dao.getInventario(Inventory.getName().toString());
+        if (q != null) {
             return "El objeto a ingresar ya existe en el inventario";
-        }else{
+        } else {
+            dao.addInventario(Inventory);
             return "Ingreso Existoso";
         }
     }
