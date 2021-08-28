@@ -21,6 +21,7 @@ public class DaoInventarioImpl extends SQLiteOpenHelper implements DAOInventario
     private static final String NOMBRE = "Nombre";
     private static final String CANTIDAD = "Cantidad";
     private static final String PRECIO = "Precio";
+    private static final String BITMAP = "Bitmap";
 
     public DaoInventarioImpl(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -126,6 +127,7 @@ public class DaoInventarioImpl extends SQLiteOpenHelper implements DAOInventario
         values.put(NOMBRE,Inventario.getName());
         values.put(CANTIDAD, Inventario.getCant());
         values.put(PRECIO,Inventario.getPrice());
+        values.put(BITMAP, Inventario.getArr());
         try{
             db.update(TABLE_INVENTORY, values, KEY_ID + " = ?",
                     new String[] { String.valueOf(Inventario.getId()) });

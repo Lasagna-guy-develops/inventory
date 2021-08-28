@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
         TextInputEditText Precio = (TextInputEditText) findViewById(R.id.TextInputEditText2);
         TextInputEditText Nombre = (TextInputEditText) findViewById(R.id.TextInputEditText3);
 
-        Dialog dialog = new Dialog(MainActivity.this);
-
         String msg = CtrlInventario.addInventario(Nombre.getText().toString(),
                 Integer.parseInt(Cantidad.getText().toString()),
                 Float.parseFloat(Precio.getText().toString()),
@@ -58,21 +56,27 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
         if(msg.compareTo("El objeto a ingresar ya existe en el inventario")!=0) {
+
             int id = CtrlInventario.retrieveInsertedId(Nombre.getText().toString(),
                     Integer.parseInt(Cantidad.getText().toString()),
                     Float.parseFloat(Precio.getText().toString()),
                     new BOInventario(), db);
 
-//        Bitmap qr = crearQr(id);
-//
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        qr.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//         byte[] bArray = baos.toByteArray();
+            Bitmap qr = crearQr(id);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            qr.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] arr = baos.toByteArray();
+
+            boolean b = CtrlInventario.addInventarioQr(id, Nombre.getText().toString(),
+                    Integer.parseInt(Cantidad.getText().toString()),
+                    Float.parseFloat(Precio.getText().toString()),
+                    arr, new BOInventario(), db);
+
         }
 
-         Cantidad.setText("");
-         Precio.setText("");
-         Nombre.setText("");
+        Cantidad.setText("");
+        Precio.setText("");
+        Nombre.setText("");
 
     }
 

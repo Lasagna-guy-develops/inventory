@@ -18,6 +18,10 @@ public class BOInventario{
         }
     }
 
+    public boolean addQr(Inventario Inventory,DaoInventarioImpl dao){
+        return dao.updateInventory(Inventory);
+    }
+
     public int retrieveInsertedId(Inventario Inventory, DaoInventarioImpl dao) {
         return dao.getInventario(Inventory.getName()).getId();
     }

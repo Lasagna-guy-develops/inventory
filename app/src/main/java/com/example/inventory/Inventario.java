@@ -6,6 +6,7 @@ public class Inventario {
     String Name;
     int cant;
     float price;
+    byte[] arr;
 
     public Inventario(){
 
@@ -55,5 +56,13 @@ public class Inventario {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public byte[] getArr() {
+        return arr;
+    }
+
+    public void setArr(byte[] arr) {
+        this.arr = arr;
     }
 }
