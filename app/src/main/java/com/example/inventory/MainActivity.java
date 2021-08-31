@@ -2,7 +2,6 @@ package com.example.inventory;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.media.MediaScannerConnection;
@@ -15,6 +14,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.view.Display;
 
+import com.example.inventory.BO.BOInventario;
+import com.example.inventory.Ctrl.CtrlInventario;
+import com.example.inventory.DAO.DaoInventarioImpl;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.zxing.WriterException;
 
@@ -24,13 +26,7 @@ import androidmads.library.qrgenearator.QRGEncoder;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.List;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {

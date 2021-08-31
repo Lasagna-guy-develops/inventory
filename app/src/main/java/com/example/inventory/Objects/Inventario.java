@@ -1,4 +1,4 @@
-package com.example.inventory;
+package com.example.inventory.Objects;
 import static android.R.attr.name;
 public class Inventario {
 

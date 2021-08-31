@@ -1,4 +1,6 @@
-package com.example.inventory;
+package com.example.inventory.DAO;
+
+import com.example.inventory.Objects.Inventario;
 
 import java.util.List;
 

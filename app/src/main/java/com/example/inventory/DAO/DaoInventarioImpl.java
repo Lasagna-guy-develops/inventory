@@ -1,4 +1,4 @@
-package com.example.inventory;
+package com.example.inventory.DAO;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,10 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.inventory.Objects.Inventario;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoInventarioImpl extends SQLiteOpenHelper implements DAOInventario{
+public class DaoInventarioImpl extends SQLiteOpenHelper implements DAOInventario {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "Inventory";

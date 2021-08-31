@@ -1,11 +1,15 @@
-package com.example.inventory;
+package com.example.inventory.Ctrl;
+
+import com.example.inventory.BO.BOInventario;
+import com.example.inventory.DAO.DaoInventarioImpl;
+import com.example.inventory.Objects.Inventario;
 
 public class CtrlInventario {
 
     public CtrlInventario(){
     }
 
-    public static String addInventario(String Name, int cant, float price, BOInventario bo,DaoInventarioImpl dao){
+    public static String addInventario(String Name, int cant, float price, BOInventario bo, DaoInventarioImpl dao){
         Inventario aux = new Inventario(Name,cant,price);
         return bo.addInventario(aux,dao);
     }

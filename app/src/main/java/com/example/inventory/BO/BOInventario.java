@@ -1,5 +1,8 @@
-package com.example.inventory;
+package com.example.inventory.BO;
 
+
+import com.example.inventory.DAO.DaoInventarioImpl;
+import com.example.inventory.Objects.Inventario;
 
 public class BOInventario{
 
@@ -8,7 +11,7 @@ public class BOInventario{
 
     }
 
-    public String addInventario(Inventario Inventory,DaoInventarioImpl dao) {
+    public String addInventario(Inventario Inventory, DaoInventarioImpl dao) {
         Inventario q = dao.getInventario(Inventory.getName().toString());
         if (q != null) {
             return "El objeto a ingresar ya existe en el inventario";
