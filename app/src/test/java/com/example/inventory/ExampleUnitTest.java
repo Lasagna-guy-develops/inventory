@@ -31,6 +31,7 @@ public class ExampleUnitTest {
     int id,cant;
     String Name;
     float price;
+    static MainActivity MA;
 
     @Parameterized.Parameters
     public static Iterable<Object[]> getData(){
@@ -42,7 +43,8 @@ public class ExampleUnitTest {
     @BeforeClass
     public static void beforeClass(){
         System.out.println("BeforeClass()");
-        db = new DaoInventarioImpl(null);
+        MA = new MainActivity();
+        db = new DaoInventarioImpl();
         bo = new BOInventario();
         c = new CtrlInventario();
         System.out.println("Main y Db Creado");
