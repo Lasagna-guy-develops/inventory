@@ -34,21 +34,7 @@ public class DaoInventarioImpl extends SQLiteOpenHelper implements DAOInventario
         String CREATE_INVENTORY_TABLE = "CREATE TABLE " + TABLE_INVENTORY + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + NOMBRE + " VARCHAR(45),"
                 + CANTIDAD + " INTEGER," + PRECIO + " DOUBLE" + ")";
-        db.execSQL(CREATE_INVENTORY_TABLE);public boolean addInventario(Inventario Inventario) {
-            SQLiteDatabase db = this.getWritableDatabase();
-
-            ContentValues values = new ContentValues();
-            values.put(NOMBRE, Inventario.getName());
-            values.put(CANTIDAD, Inventario.getCant());
-            values.put(PRECIO, Inventario.getPrice());
-            try {
-                db.insert(TABLE_INVENTORY, null, values);
-                db.close();
-                return true;
-            } catch (SQLiteException e) {
-                return false;
-            }
-        }
+        db.execSQL(CREATE_INVENTORY_TABLE);
     }
 
     @Override
@@ -58,7 +44,21 @@ public class DaoInventarioImpl extends SQLiteOpenHelper implements DAOInventario
         onCreate(db);
     }
 
+    public boolean addInventario(Inventario Inventario) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+        values.put(NOMBRE, Inventario.getName());
+        values.put(CANTIDAD, Inventario.getCant());
+        values.put(PRECIO, Inventario.getPrice());
+        try {
+            db.insert(TABLE_INVENTORY, null, values);
+            db.close();
+            return true;
+        } catch (SQLiteException e) {
+            return false;
+        }
+    }
 
     public Inventario getInventario(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
