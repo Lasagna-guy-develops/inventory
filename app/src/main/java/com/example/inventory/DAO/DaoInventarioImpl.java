@@ -162,4 +162,12 @@ public class DaoInventarioImpl extends SQLiteOpenHelper implements DAOInventario
             return false;
         }
     }
+
+    public Inventario getInventario2(Inventario inv) {
+        if(inv.getName()=="Coca-Cola"){
+            return inv;
+        }else{
+            return null;
+        }
+    }
 }

@@ -24,4 +24,10 @@ public class CtrlInventario {
         Inventario aux = new Inventario(Name,cant,price);
         return bo.retrieveInsertedId(aux,dao);
     }
+
+    public static String addInventario(String Name, int cant, float price){
+        Inventario aux = new Inventario(Name,cant,price);
+        BOInventario bo = new BOInventario();
+        return bo.addInventario(aux);
+    }
 }

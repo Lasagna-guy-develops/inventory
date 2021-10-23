@@ -1,5 +1,4 @@
 package com.example.inventory;
-import android.support.test.InstrumentationRegistry;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +8,6 @@ import static org.junit.Assert.*;
 
 import com.example.inventory.BO.BOInventario;
 import com.example.inventory.Ctrl.CtrlInventario;
-import com.example.inventory.DAO.DaoInventarioImpl;
 import com.example.inventory.Objects.Inventario;
 
 import java.util.Arrays;
@@ -24,30 +22,25 @@ import java.util.Arrays;
 @RunWith(value = Parameterized.class)
 public class ExampleUnitTest {
 
-    static DaoInventarioImpl db;
     static BOInventario bo;
     static CtrlInventario c;
     Inventario inv;
     int id,cant;
     String Name;
     float price;
-    static MainActivity MA;
 
     @Parameterized.Parameters
     public static Iterable<Object[]> getData(){
         return Arrays.asList(new Object[][]{
-                {"Coca-Cola",10,10000,0}   ,{124124,89,-10000,1293801}
+                {"Coca-Cola",10,10000,0},{"Pepsi",10,10000,0}  ,{124124,89,-10000,1293801}
         });
     }
 
     @BeforeClass
     public static void beforeClass(){
         System.out.println("BeforeClass()");
-        MA = new MainActivity();
-        db = new DaoInventarioImpl();
-        bo = new BOInventario();
         c = new CtrlInventario();
-        System.out.println("Main y Db Creado");
+        bo = new BOInventario();
     }
 
     public ExampleUnitTest(String Name, int cant, float price,int id){
@@ -59,16 +52,30 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void DAO_addInventarioTest(){
-        System.out.println("TestDaoAdd");
-        String result = c.addInventario(this.Name,this.cant,this.price,this.bo,this.db);
+    public void Ctrl_addInventarioTest_YaExiste(){
+        System.out.println("TestDaoAdd_YaExistente"+this.Name);
+        String result = c.addInventario(this.Name,this.cant,this.price);
+        assertEquals("Ingreso Existoso",result);
+    }
+
+    @Test
+    public void Ctrl_addInventarioTest_NoExiste(){
+        System.out.println("TestDaoAdd_NoExistente"+this.Name);
+        String result = c.addInventario(this.Name,this.cant,this.price);
         assertEquals("El objeto a ingresar ya existe en el inventario",result);
     }
 
     @Test
-    public void DAO_getInventarioTest(){
-        System.out.println("TestDaoGet");
-        Inventario result = db.getInventario(this.id);
-        assertNotNull(result);
+    public void BOI_addInventarioTest_YaExiste(){
+        System.out.println("TestDaoAdd_YaExistente"+this.Name);
+        String result = bo.addInventario(this.inv);
+        assertEquals("Ingreso Existoso",result);
+    }
+
+    @Test
+    public void BOI_addInventarioTest_NoExiste(){
+        System.out.println("TestDaoAdd_NoExistente"+this.Name);
+        String result = bo.addInventario(this.inv);
+        assertEquals("El objeto a ingresar ya existe en el inventario",result);
     }
 }
