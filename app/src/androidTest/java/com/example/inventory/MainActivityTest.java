@@ -2,9 +2,14 @@ package com.example.inventory;
 
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.*;
-import static androidx.test.espresso.assertion.ViewAssertions.*;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 import android.view.View;
@@ -25,13 +30,13 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class IngresoTest {
+public class MainActivityTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void ingresoTest() {
+    public void mainActivityTest() {
         ViewInteraction textInputEditText = onView(
                 allOf(withId(R.id.TextInputEditText3),
                         childAtPosition(
@@ -40,7 +45,7 @@ public class IngresoTest {
                                         0),
                                 3),
                         isDisplayed()));
-        textInputEditText.perform(replaceText("coco"), closeSoftKeyboard());
+        textInputEditText.perform(replaceText("coca cola"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText2 = onView(
                 allOf(withId(R.id.TextInputEditText2),
@@ -50,7 +55,7 @@ public class IngresoTest {
                                         0),
                                 2),
                         isDisplayed()));
-        textInputEditText2.perform(replaceText("69000"), closeSoftKeyboard());
+        textInputEditText2.perform(replaceText("200"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText3 = onView(
                 allOf(withId(R.id.TextInputEditText),
@@ -60,7 +65,27 @@ public class IngresoTest {
                                         0),
                                 1),
                         isDisplayed()));
-        textInputEditText3.perform(replaceText("420"), closeSoftKeyboard());
+        textInputEditText3.perform(replaceText("30"), closeSoftKeyboard());
+
+        ViewInteraction textInputEditText4 = onView(
+                allOf(withId(R.id.TextInputEditText2), withText("200"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        textInputEditText4.perform(replaceText("2000"));
+
+        ViewInteraction textInputEditText5 = onView(
+                allOf(withId(R.id.TextInputEditText2), withText("2000"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        textInputEditText5.perform(closeSoftKeyboard());
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.Button), withText("Enviar"),
@@ -71,6 +96,22 @@ public class IngresoTest {
                                 0),
                         isDisplayed()));
         materialButton.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.textView), withText("Ingreso Existoso"),
+                        withParent(withParent(withId(android.R.id.content))),
+                        isDisplayed()));
+        textView.check(matches(withText("Ingreso Existoso")));
+
+        ViewInteraction materialButton2 = onView(
+                allOf(withId(R.id.Button), withText("Enviar"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialButton2.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

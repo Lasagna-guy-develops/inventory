@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Inventory">
         <activity
+            android:name=".Lista"
+            android:exported="true" />
+        <activity
+            android:name=".Ingresar"
+            android:exported="true" />
+        <activity
+            android:name=".IngresoExitoso"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
