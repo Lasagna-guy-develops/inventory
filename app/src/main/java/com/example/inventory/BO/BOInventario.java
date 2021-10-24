@@ -18,7 +18,7 @@ public class BOInventario{
         } else {
             dao.addInventario(Inventory);
             return "Ingreso Existoso";
-        }
+        }"El objeto a ingresar ya existe en el inventario"
     }
 
     public boolean addQr(Inventario Inventory,DaoInventarioImpl dao){
