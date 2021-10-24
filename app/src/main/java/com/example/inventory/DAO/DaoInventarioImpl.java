@@ -8,14 +8,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.inventory.Objects.Inventario;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoInventarioImpl extends SQLiteOpenHelper implements DAOInventario {
+public class DaoInventarioImpl extends SQLiteAssetHelper implements DAOInventario {
 
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "Inventory";
+    private static final int DATABASE_VERSION = 3;
+    private static final String DATABASE_NAME = "Inventory.db";
     private static final String TABLE_INVENTORY = "Inventory";
 
     //Inventory Table Columns names
@@ -29,20 +30,20 @@ public class DaoInventarioImpl extends SQLiteOpenHelper implements DAOInventario
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        String CREATE_INVENTORY_TABLE = "CREATE TABLE " + TABLE_INVENTORY + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + NOMBRE + " VARCHAR(45),"
-                + CANTIDAD + " INTEGER," + PRECIO + " DOUBLE" + ")";
-        db.execSQL(CREATE_INVENTORY_TABLE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INVENTORY);
-        // Create tables again
-        onCreate(db);
-    }
+//    @Override
+//    public void onCreate(SQLiteDatabase db) {
+//        String CREATE_INVENTORY_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_INVENTORY + "("
+//                + KEY_ID + " INTEGER PRIMARY KEY," + NOMBRE + " VARCHAR(45),"
+//                + CANTIDAD + " INTEGER," + PRECIO + " DOUBLE," + BITMAP + " BLOB" + ")";
+//        db.execSQL(CREATE_INVENTORY_TABLE);
+//    }
+//
+//    @Override
+//    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INVENTORY);
+//        // Create tables again
+//        onCreate(db);
+//    }
 
     public boolean addInventario(Inventario Inventario) {
         SQLiteDatabase db = this.getWritableDatabase();
