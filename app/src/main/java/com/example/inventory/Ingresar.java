@@ -49,46 +49,53 @@ public class Ingresar extends AppCompatActivity {
     }
 
     public void ButtonOnClick(View v) throws WriterException {
-        System.out.println();
-        System.out.println(db.getAllProducts());
-        System.out.println();
 
         Button button = (Button) v;
         TextInputEditText Cantidad = (TextInputEditText) findViewById(R.id.TextInputEditText);
         TextInputEditText Precio = (TextInputEditText) findViewById(R.id.TextInputEditText2);
         TextInputEditText Nombre = (TextInputEditText) findViewById(R.id.TextInputEditText3);
 
-        String msg = CtrlInventario.addInventario(Nombre.getText().toString(),
-                Integer.parseInt(Cantidad.getText().toString()),
-                Float.parseFloat(Precio.getText().toString()),
-                new BOInventario(), db);
+        if(Nombre.getText().toString().isEmpty()||Cantidad.getText().toString().isEmpty()||Precio.getText().toString().isEmpty()) {
 
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        if(msg.compareTo("El objeto a ingresar ya existe en el inventario")!=0) {
-
-            int id = CtrlInventario.retrieveInsertedId(Nombre.getText().toString(),
-                    Integer.parseInt(Cantidad.getText().toString()),
-                    Float.parseFloat(Precio.getText().toString()),
-                    new BOInventario(), db);
-
-            Bitmap qr = crearQr(id);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            qr.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] arr = baos.toByteArray();
-
-            boolean b = CtrlInventario.addInventarioQr(id, Nombre.getText().toString(),
-                    Integer.parseInt(Cantidad.getText().toString()),
-                    Float.parseFloat(Precio.getText().toString()),
-                    arr, new BOInventario(), db);
-
+            if (Nombre.getText().toString().isEmpty()) {
+                Nombre.setError("Nombre esta vacio");
+            }
+            if (Cantidad.getText().toString().isEmpty()) {
+                Cantidad.setError("Cantidad esta vacia");
+            }
+            if (Precio.getText().toString().isEmpty()) {
+                Precio.setError("Precio esta vacio");
+            }
+        }else{
+            try {
+                double value = Double.parseDouble(Precio.getText().toString());
+                if (value < 0)
+                    Precio.setError("El número es negativo");
+                else
+                    System.out.println(value + " is possitive");
+            } catch (NumberFormatException e) {
+                Precio.setError("No es un número");
+            }
+            try {
+                double value = Double.parseDouble(Cantidad.getText().toString());
+                if (value < 0)
+                    Cantidad.setError("El número es negativo");
+                else
+                    System.out.println(value + " is possitive");
+            } catch (NumberFormatException e) {
+                Cantidad.setError("No es un número");
+            }
+            if(Precio.getError()==null&&Cantidad.getError()==null){
+                String msg = Ingresar(Cantidad, Precio, Nombre);
+                Intent i = new Intent(this, IngresoExitoso.class);
+                i.putExtra("msg",msg);
+                startActivity(i);
+            }
         }
 
         Cantidad.setText("");
         Precio.setText("");
         Nombre.setText("");
-        Intent i = new Intent(this, IngresoExitoso.class);
-        i.putExtra("msg",msg);
-        startActivity(i);
 
     }
 
@@ -148,6 +155,33 @@ public class Ingresar extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private String Ingresar(TextInputEditText Cantidad, TextInputEditText Precio, TextInputEditText Nombre) {
+        String msg = CtrlInventario.addInventario(Nombre.getText().toString(),
+                Integer.parseInt(Cantidad.getText().toString()),
+                Float.parseFloat(Precio.getText().toString()),
+                new BOInventario(), db);
+
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        if (msg.compareTo("El objeto a ingresar ya existe en el inventario") != 0) {
+
+            int id = CtrlInventario.retrieveInsertedId(Nombre.getText().toString(),
+                    Integer.parseInt(Cantidad.getText().toString()),
+                    Float.parseFloat(Precio.getText().toString()),
+                    new BOInventario(), db);
+
+            Bitmap qr = crearQr(id);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            qr.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] arr = baos.toByteArray();
+
+            boolean b = CtrlInventario.addInventarioQr(id, Nombre.getText().toString(),
+                    Integer.parseInt(Cantidad.getText().toString()),
+                    Float.parseFloat(Precio.getText().toString()),
+                    arr, new BOInventario(), db);
+        }
+        return msg;
     }
 
 }
