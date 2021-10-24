@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/jorge/OneDrive/Documentos/USB/8vo Semestre/Impletacion e Integracion de SoftWare/Inventory/app/src/main/res/layout/activity_ingresar.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/jorge/OneDrive/Documentos/USB/8vo Semestre/Impletacion e Integracion de SoftWare/Inventory/app/src/main/res/layout/activity_ingreso_exitoso.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/jorge/OneDrive/Documentos/USB/8vo Semestre/Impletacion e Integracion de SoftWare/Inventory/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="app/src/main/res/layout/activity_ingresar.xml" value="0.35989583333333336" />
         <entry key="app/src/main/res/layout/activity_ingreso_exitoso.xml" value="0.35989583333333336" />
         <entry key="app/src/main/res/layout/activity_lista.xml" value="0.34479166666666666" />
