@@ -30,20 +30,20 @@ public class DaoInventarioImpl extends SQLiteAssetHelper implements DAOInventari
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-//    @Override
-//    public void onCreate(SQLiteDatabase db) {
-//        String CREATE_INVENTORY_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_INVENTORY + "("
-//                + KEY_ID + " INTEGER PRIMARY KEY," + NOMBRE + " VARCHAR(45),"
-//                + CANTIDAD + " INTEGER," + PRECIO + " DOUBLE," + BITMAP + " BLOB" + ")";
-//        db.execSQL(CREATE_INVENTORY_TABLE);
-//    }
-//
-//    @Override
-//    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INVENTORY);
-//        // Create tables again
-//        onCreate(db);
-//    }
+    /*@Override
+    public void onCreate(SQLiteDatabase db) {
+        String CREATE_INVENTORY_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_INVENTORY + "("
+                + KEY_ID + " INTEGER PRIMARY KEY," + NOMBRE + " VARCHAR(45),"
+                + CANTIDAD + " INTEGER," + PRECIO + " DOUBLE," + BITMAP + " BLOB" + ")";
+        db.execSQL(CREATE_INVENTORY_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INVENTORY);
+        // Create tables again
+        onCreate(db);
+    }*/
 
     public boolean addInventario(Inventario Inventario) {
         SQLiteDatabase db = this.getWritableDatabase();

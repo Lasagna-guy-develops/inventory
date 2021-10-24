@@ -1,6 +1,8 @@
 package com.example.inventory.BO;
 
 
+import android.content.Context;
+
 import com.example.inventory.DAO.DaoInventarioImpl;
 import com.example.inventory.Objects.Inventario;
 
@@ -29,8 +31,8 @@ public class BOInventario{
         return dao.getInventario(Inventory.getName()).getId();
     }
 
-    public String addInventario(Inventario Inventory) {
-        DaoInventarioImpl dao = new DaoInventarioImpl(null);
+    public String addInventario(Inventario Inventory, Context context) {
+        DaoInventarioImpl dao = new DaoInventarioImpl(context);
         Inventario q = dao.getInventario2(Inventory);
         if (q != null) {
             return "El objeto a ingresar ya existe en el inventario";
