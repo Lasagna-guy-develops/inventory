@@ -23,6 +23,20 @@ public class BOInventario{
         }
     }
 
+    public int calcularPrecioVenta(float precioOriginal){
+        //agregar el IVA
+        int precioVenta = (int)(precioOriginal * 1.19);
+
+        if (precioOriginal < 7500){
+            precioVenta = (int)(1.05*precioVenta);
+        }else if(precioVenta < 20000){
+            precioVenta = (int)(1.1*precioVenta);
+        }else{
+            precioVenta = (int)(1.15*precioVenta);
+        }
+        return precioVenta;
+    }
+
     public boolean addQr(Inventario Inventory,DaoInventarioImpl dao){
         return dao.updateInventory(Inventory);
     }
