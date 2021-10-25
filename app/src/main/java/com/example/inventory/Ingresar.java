@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -40,13 +41,37 @@ public class Ingresar extends AppCompatActivity {
 
     public DaoInventarioImpl db;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new DaoInventarioImpl(this);
         setContentView(R.layout.activity_ingresar);
+        TextInputEditText Cantidad = (TextInputEditText) findViewById(R.id.TextInputEditText);
+        TextInputEditText Precio = (TextInputEditText) findViewById(R.id.TextInputEditText2);
+        TextInputEditText Nombre = (TextInputEditText) findViewById(R.id.TextInputEditText3);
+        Cantidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cantidad.getText().clear();
+                Cantidad.setHint("Cantidad");
+            }
+        });
+        Precio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Precio.getText().clear();
+                Precio.setHint("Precio");
+            }
+        });
+        Nombre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Nombre.getText().clear();
+                Nombre.setHint("Nombre");
+            }
+        });
     }
+
 
     public void ButtonOnClick(View v) throws WriterException {
 
@@ -99,7 +124,10 @@ public class Ingresar extends AppCompatActivity {
                 Cantidad.setText("No es un número");
             }
             if(Precio.getError()==null&&Cantidad.getError()==null){
-                String msg = Ingresar(Cantidad, Precio, Nombre);
+                String msg = Ingresar(cantidad, precio, nombre);
+                Cantidad.setText("");
+                Precio.setText("");
+                Nombre.setText("");
                 Intent i = new Intent(this, IngresoExitoso.class);
                 i.putExtra("msg",msg);
                 startActivity(i);
@@ -165,18 +193,18 @@ public class Ingresar extends AppCompatActivity {
 
     }
 
-    private String Ingresar(TextInputEditText Cantidad, TextInputEditText Precio, TextInputEditText Nombre) {
-        String msg = CtrlInventario.addInventario(Nombre.getText().toString(),
-                Integer.parseInt(Cantidad.getText().toString()),
-                Float.parseFloat(Precio.getText().toString()),
+    private String Ingresar(String Cantidad, String Precio, String Nombre) {
+        String msg = CtrlInventario.addInventario(Nombre,
+                Integer.parseInt(Cantidad),
+                Float.parseFloat(Precio),
                 new BOInventario(), db);
 
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         if (msg.compareTo("El objeto a ingresar ya existe en el inventario") != 0) {
 
-            int id = CtrlInventario.retrieveInsertedId(Nombre.getText().toString(),
-                    Integer.parseInt(Cantidad.getText().toString()),
-                    Float.parseFloat(Precio.getText().toString()),
+            int id = CtrlInventario.retrieveInsertedId(Nombre,
+                    Integer.parseInt(Cantidad),
+                    Float.parseFloat(Precio),
                     new BOInventario(), db);
 
             Bitmap qr = crearQr(id);
@@ -184,14 +212,11 @@ public class Ingresar extends AppCompatActivity {
             qr.compress(Bitmap.CompressFormat.PNG, 100, baos);
             byte[] arr = baos.toByteArray();
 
-            boolean b = CtrlInventario.addInventarioQr(id, Nombre.getText().toString(),
-                    Integer.parseInt(Cantidad.getText().toString()),
-                    Float.parseFloat(Precio.getText().toString()),
+            boolean b = CtrlInventario.addInventarioQr(id, Nombre,
+                    Integer.parseInt(Cantidad),
+                    Float.parseFloat(Precio),
                     arr, new BOInventario(), db);
         }
-        Cantidad.setText("");
-        Precio.setText("");
-        Nombre.setText("");
         return msg;
     }
 
