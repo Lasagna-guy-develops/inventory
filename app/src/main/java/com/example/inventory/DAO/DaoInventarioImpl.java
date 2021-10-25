@@ -30,6 +30,7 @@ public class DaoInventarioImpl extends SQLiteAssetHelper implements DAOInventari
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
     /*@Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_INVENTORY_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_INVENTORY + "("
