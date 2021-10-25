@@ -1,42 +1,48 @@
 package com.example.inventory;
 
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
-
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-
+import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+
+import static androidx.test.InstrumentationRegistry.getInstrumentation;
+import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static androidx.test.espresso.action.ViewActions.*;
+import static androidx.test.espresso.assertion.ViewAssertions.*;
+import static androidx.test.espresso.matcher.ViewMatchers.*;
+
+import com.example.inventory.R;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.is;
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TestYaExiste {
+public class TC4 {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void testYaExiste() {
+    public void tC4() {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.Button), withText("Ingresar"),
                         childAtPosition(
@@ -55,7 +61,7 @@ public class TestYaExiste {
                                         0),
                                 3),
                         isDisplayed()));
-        textInputEditText.perform(replaceText("coco"), closeSoftKeyboard());
+        textInputEditText.perform(replaceText("banana"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText2 = onView(
                 allOf(withId(R.id.TextInputEditText2),
@@ -86,6 +92,56 @@ public class TestYaExiste {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
+
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(R.id.Button), withText("Enviar"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialButton3.perform(click());
+
+        ViewInteraction textInputEditText4 = onView(
+                allOf(withId(R.id.TextInputEditText3),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        textInputEditText4.perform(replaceText("banana"), closeSoftKeyboard());
+
+        ViewInteraction textInputEditText5 = onView(
+                allOf(withId(R.id.TextInputEditText2),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        textInputEditText5.perform(replaceText("2000"), closeSoftKeyboard());
+
+        ViewInteraction textInputEditText6 = onView(
+                allOf(withId(R.id.TextInputEditText),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        textInputEditText6.perform(replaceText("40"), closeSoftKeyboard());
+
+        ViewInteraction materialButton4 = onView(
+                allOf(withId(R.id.Button), withText("Enviar"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialButton4.perform(click());
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.textView), withText("El objeto a ingresar ya existe en el inventario"),
