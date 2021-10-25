@@ -55,35 +55,48 @@ public class Ingresar extends AppCompatActivity {
         TextInputEditText Precio = (TextInputEditText) findViewById(R.id.TextInputEditText2);
         TextInputEditText Nombre = (TextInputEditText) findViewById(R.id.TextInputEditText3);
 
-        if(Nombre.getText().toString().isEmpty()||Cantidad.getText().toString().isEmpty()||Precio.getText().toString().isEmpty()) {
+        String cantidad = Cantidad.getText().toString();
+        String precio = Precio.getText().toString();
+        String nombre = Nombre.getText().toString();
 
-            if (Nombre.getText().toString().isEmpty()) {
+        Cantidad.getText().clear();
+        Precio.getText().clear();
+        Nombre.getText().clear();
+
+        if(nombre.isEmpty()||cantidad.isEmpty()||precio.isEmpty()) {
+
+            if (nombre.isEmpty()) {
                 Nombre.setError("Nombre esta vacio");
+                Nombre.setText("Nombre esta vacio");
             }
-            if (Cantidad.getText().toString().isEmpty()) {
+            if (cantidad.isEmpty()) {
                 Cantidad.setError("Cantidad esta vacia");
+                Cantidad.setText("Cantidad esta vacia");
             }
-            if (Precio.getText().toString().isEmpty()) {
+            if (precio.isEmpty()) {
                 Precio.setError("Precio esta vacio");
+                Precio.setText("Precio esta vacio");
             }
         }else{
             try {
-                double value = Double.parseDouble(Precio.getText().toString());
-                if (value < 0)
+                double value = Double.parseDouble(precio);
+                if (value < 0) {
                     Precio.setError("El número es negativo");
-                else
-                    System.out.println(value + " is possitive");
-            } catch (NumberFormatException e) {
+                    Precio.setText("El número es negativo");
+                }
+            }catch(NumberFormatException e) {
                 Precio.setError("No es un número");
+                Precio.setText("No es un número");
             }
             try {
-                double value = Double.parseDouble(Cantidad.getText().toString());
-                if (value < 0)
+                double value = Double.parseDouble(cantidad);
+                if (value < 0) {
                     Cantidad.setError("El número es negativo");
-                else
-                    System.out.println(value + " is possitive");
+                    Cantidad.setText("El número es negativo");
+                }
             } catch (NumberFormatException e) {
                 Cantidad.setError("No es un número");
+                Cantidad.setText("No es un número");
             }
             if(Precio.getError()==null&&Cantidad.getError()==null){
                 String msg = Ingresar(Cantidad, Precio, Nombre);
@@ -92,11 +105,6 @@ public class Ingresar extends AppCompatActivity {
                 startActivity(i);
             }
         }
-
-        Cantidad.setText("");
-        Precio.setText("");
-        Nombre.setText("");
-
     }
 
     private Bitmap crearQr(int id){
@@ -181,6 +189,9 @@ public class Ingresar extends AppCompatActivity {
                     Float.parseFloat(Precio.getText().toString()),
                     arr, new BOInventario(), db);
         }
+        Cantidad.setText("");
+        Precio.setText("");
+        Nombre.setText("");
         return msg;
     }
 
