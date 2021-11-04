@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.view.Display;
 import com.example.inventory.BO.BOInventario;
 import com.example.inventory.Ctrl.CtrlInventario;
 import com.example.inventory.DAO.DaoInventarioImpl;
+import com.example.inventory.DAO.NewDao;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.zxing.WriterException;
 
@@ -27,6 +29,11 @@ import androidmads.library.qrgenearator.QRGEncoder;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
 
 import android.widget.Toast;
 
@@ -39,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         db = new DaoInventarioImpl(this);
         setContentView(R.layout.activity_main);
+
+//        Connection conn = new NewDao().conn();
     }
     public void ButtonOnClick(View v) throws WriterException {
 
@@ -51,6 +60,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, Lista.class);
         startActivity(intent);
     }
-
 
 }
