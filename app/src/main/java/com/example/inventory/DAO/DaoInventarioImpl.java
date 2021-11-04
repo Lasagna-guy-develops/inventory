@@ -54,9 +54,7 @@ public class DaoInventarioImpl extends SQLiteAssetHelper implements DAOInventari
         values.put(CANTIDAD, Inventario.getCant());
         values.put(PRECIO, Inventario.getPrice());
         try {
-            db.beginTransaction();
             db.insert(TABLE_INVENTORY, null, values);
-            db.endTransaction();
             db.close();
 
             return true;
