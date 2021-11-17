@@ -53,13 +53,13 @@ import java.util.List;
 
 public class DaoWS extends Context {
 
-    public void get(final VolleyCallBack callBack){
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+    public void get(){
+        RequestQueue queue = Volley.newRequestQueue(this);
         String url ="https://inventorywebservices.herokuapp.com/webService/inventarioDisp.json?user=a";
-        final List<String> list = new ArrayList<String>();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                         try {
+                            List<String> list = new ArrayList<String>();
                             System.out.println("Response is: "+response);
                             JSONObject obj = new JSONObject(response);
                             JSONArray array = obj.getJSONArray("Products");
@@ -68,7 +68,7 @@ public class DaoWS extends Context {
                                         +array.getJSONObject(i).getString("Id")+" "
                                         +array.getJSONObject(i).getString("Precio")+" "
                                         +array.getJSONObject(i).getString("Producto"));
-                                callBack.onSuccess(response);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -76,20 +76,19 @@ public class DaoWS extends Context {
                     },
                 volleyError -> Toast.makeText(this, volleyError.getMessage(), Toast.LENGTH_SHORT).show()
         );
-
-        // Add the request to the RequestQueue.
-        requestQueue.add(stringRequest);
+        queue.add(stringRequest);
     }
 
-    public void post(){
-        String postUrl = "https://reqres.in/api/users";
+    public void post(String n, String q, String p, String o){
+        String postUrl = "https://inventorywebservices.herokuapp.com/webService/productInsert";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         JSONObject postData = new JSONObject();
         try {
-            postData.put("name", "Jonathan");
-            postData.put("job", "Software Engineer");
-
+            postData.put("nombre", n);
+            postData.put("cantidad", q);
+            postData.put("precio", p);
+            postData.put("owner", o);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -97,14 +96,10 @@ public class DaoWS extends Context {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, postData, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                System.out.println(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                error.printStackTrace();
             }
         });
 
