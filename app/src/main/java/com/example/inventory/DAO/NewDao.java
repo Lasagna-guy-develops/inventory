@@ -21,8 +21,8 @@ public class NewDao {
         } catch (Exception e) {
             System.out.println("JAVA: error");
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 }
 

@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new DaoInventarioImpl(this);
         setContentView(R.layout.activity_main);
 
 //        Connection conn = new NewDao().conn();

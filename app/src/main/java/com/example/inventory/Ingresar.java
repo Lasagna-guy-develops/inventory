@@ -44,7 +44,7 @@ public class Ingresar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new DaoInventarioImpl(this);
+        db = new DaoInventarioImpl();
         setContentView(R.layout.activity_ingresar);
         TextInputEditText Cantidad = (TextInputEditText) findViewById(R.id.TextInputEditText);
         TextInputEditText Precio = (TextInputEditText) findViewById(R.id.TextInputEditText2);

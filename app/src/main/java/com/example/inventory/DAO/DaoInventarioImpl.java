@@ -15,25 +15,22 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DaoInventarioImpl implements DAOInventario {
 
-    Context cont;
-    public DaoInventarioImpl(Context context) {
-        this.cont = context;
-    }
-
     public Connection conexionDB(){
         Connection cnn=null;
         try{
             StrictMode.ThreadPolicy politica = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(politica);
-            Class.forName("org.gjt.mm.mysql.Driver").newInstance();
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             cnn = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/varDt01HvK","varDt01HvK","gQa4TK4SvA");
         }catch(Exception e){
+            System.out.println(e);
         }
         return cnn;
 
@@ -90,10 +87,26 @@ public class DaoInventarioImpl implements DAOInventario {
             System.out.println("Error in initializing a connection to MYSQL DB");
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
     public List getAllProducts() {
+        try{
+            Statement stm = conexionDB().createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM Inventory");
+            List<String> InventoryList = new ArrayList<>();
+            if (rs.first()) {
+                do {
+                    InventoryList.add(rs.getString(0) + " - " + rs.getString(1) + " - " + rs.getString(2) + " - " + rs.getString(3));
+                } while (rs.next());
+            }
+            stm.close();
+            // return country list
+            return InventoryList;
+            } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return null;
     }
 

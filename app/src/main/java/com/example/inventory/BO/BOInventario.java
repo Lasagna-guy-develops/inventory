@@ -45,14 +45,4 @@ public class BOInventario{
         return dao.getInventario(Inventory.getName()).getId();
     }
 
-    public String addInventario(Inventario Inventory) {
-        DaoInventarioImpl dao = new DaoInventarioImpl(null);
-        Inventario q = dao.getInventario2(Inventory);
-        if (q != null) {
-            return "El objeto a ingresar ya existe en el inventario";
-        } else {
-            //dao.addInventario(Inventory);
-            return "Ingreso Existoso";
-        }
-    }
 }

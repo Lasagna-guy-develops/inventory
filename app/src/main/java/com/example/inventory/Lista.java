@@ -33,7 +33,7 @@ public class Lista extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista);
-        db = new DaoInventarioImpl(this);
+        db = new DaoInventarioImpl();
         lv1 = (ListView)findViewById(R.id.lista);
 
         Intent i = new Intent(this, DescripcionProducto.class);
@@ -51,15 +51,7 @@ public class Lista extends AppCompatActivity {
 
         ArrayList<String> ranking = new ArrayList<>();
 
-        SQLiteDatabase bd = db.getWritableDatabase();
-        Cursor fila = bd.rawQuery("select * from Inventory", null);
-        if(fila.moveToFirst()){
-            do{
-                ranking.add(fila.getString(0) + " - " + fila.getString(1) + " - " + fila.getString(2) + " - " + fila.getString(3));
-            }while(fila.moveToNext());
-        }
-
-        bd.close();
+        ranking = (ArrayList<String>) db.getAllProducts();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ranking);
         lv1.setAdapter(adapter);
