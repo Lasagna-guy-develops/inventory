@@ -25,8 +25,6 @@ public class DaoInventarioImpl implements DAOInventario {
     public Connection conexionDB(){
         Connection cnn=null;
         try{
-            StrictMode.ThreadPolicy politica = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(politica);
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             cnn = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/varDt01HvK","varDt01HvK","gQa4TK4SvA");
         }catch(Exception e){
