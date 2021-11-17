@@ -6,16 +6,126 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.StrictMode;
+import android.widget.Toast;
 
 import com.example.inventory.Objects.Inventario;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoInventarioImpl extends SQLiteAssetHelper implements DAOInventario {
+public class DaoInventarioImpl implements DAOInventario {
 
-    private static final int DATABASE_VERSION = 3;
+    Context cont;
+    public DaoInventarioImpl(Context context) {
+        this.cont = context;
+    }
+
+    public Connection conexionDB(){
+        Connection cnn=null;
+        try{
+            StrictMode.ThreadPolicy politica = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(politica);
+            Class.forName("org.gjt.mm.mysql.Driver").newInstance();
+            cnn = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/varDt01HvK","varDt01HvK","gQa4TK4SvA");
+        }catch(Exception e){
+        }
+        return cnn;
+
+    }
+
+    @Override
+    public Inventario getInventario(int id) {
+        try{
+            Statement stm = conexionDB().createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM Inventory WHERE id='"+id+"'");
+            if(rs.next()){
+                Inventario inventory = new Inventario(Integer.parseInt(rs.getString(0)),rs.getString(1),
+                        rs.getInt(2),rs.getFloat(3));
+                stm.close();
+                return inventory;
+            }else{
+                return null;
+            }
+        }catch(Exception e){
+            System.out.println("Error in initializing a connection to MYSQL DB");
+            e.printStackTrace();
+            return null;
+        }
+    }
+    @Override
+    public boolean addInventario(Inventario Inventario) {
+        try{
+            Statement stm = conexionDB().createStatement();
+            String NOMBRE =  Inventario.getName();
+            int CANTIDAD = Inventario.getCant();
+            float PRECIO = Inventario.getPrice();
+            ResultSet rs = stm.executeQuery("INSERT INTO Inventory (nombre,cantidad precio) values ("+NOMBRE+","+CANTIDAD+","+PRECIO+")");
+            rs.close();
+            return true;
+        }catch(Exception e) {
+            System.out.println("Error in initializing a connection to MYSQL DB");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Inventario getInventario(String Name) {
+        try{
+            Statement stm = conexionDB().createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM Inventory WHERE NOMBRE='"+Name+"'");
+            if(rs.next()){
+                Inventario inventory = new Inventario(Integer.parseInt(rs.getString(0)),rs.getString(1),
+                        rs.getInt(2),rs.getFloat(3));
+                stm.close();
+                return inventory;
+            }
+        }catch(Exception e){
+            System.out.println("Error in initializing a connection to MYSQL DB");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List getAllProducts() {
+        return null;
+    }
+
+    @Override
+    public boolean updateInventory(Inventario Inventario) {
+        try{
+            Statement stm = conexionDB().createStatement();
+            String NOMBRE =  Inventario.getName();
+            int CANTIDAD = Inventario.getCant();
+            float PRECIO = Inventario.getPrice();
+            byte[] BITMAP = Inventario.getArr();
+            ResultSet rs = stm.executeQuery("INSERT INTO Inventory (nombre,cantidad precio) values ("+NOMBRE+","+CANTIDAD+","+PRECIO+")");
+            rs.close();
+            return true;
+        }catch(Exception e) {
+            System.out.println("Error in initializing a connection to MYSQL DB");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteInventory(Inventario Inventario) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteAllInventory() {
+        return false;
+    }
+
+    /*private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "Inventory.db";
     private static final String TABLE_INVENTORY = "Inventory";
 
@@ -31,7 +141,7 @@ public class DaoInventarioImpl extends SQLiteAssetHelper implements DAOInventari
     }
 
 
-    /*@Override
+    @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_INVENTORY_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_INVENTORY + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + NOMBRE + " VARCHAR(45),"
@@ -44,7 +154,7 @@ public class DaoInventarioImpl extends SQLiteAssetHelper implements DAOInventari
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_INVENTORY);
         // Create tables again
         onCreate(db);
-    }*/
+    }
 
     public boolean addInventario(Inventario Inventario) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -172,5 +282,6 @@ public class DaoInventarioImpl extends SQLiteAssetHelper implements DAOInventari
         }else{
             return null;
         }
-    }
+    }*/
+
 }
