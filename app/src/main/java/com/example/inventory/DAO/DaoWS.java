@@ -24,19 +24,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
 import android.view.Display;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.example.inventory.Objects.Inventario;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,59 +43,94 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class DaoWS extends Context {
 
-    public void get(){
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://inventorywebservices.herokuapp.com/webService/inventarioDisp.json?user=a";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                response -> {
-                        try {
-                            List<String> list = new ArrayList<String>();
-                            System.out.println("Response is: "+response);
-                            JSONObject obj = new JSONObject(response);
-                            JSONArray array = obj.getJSONArray("Products");
-                            for(int i = 0 ; i < array.length() ; i++){
-                                list.add(array.getJSONObject(i).getString("Cantidad")+" "
-                                        +array.getJSONObject(i).getString("Id")+" "
-                                        +array.getJSONObject(i).getString("Precio")+" "
-                                        +array.getJSONObject(i).getString("Producto"));
+    String url_fetchall ="https://inventorywebservices.herokuapp.com/webService/inventarioDisp.json?user=a";
+    String url_exists = "https://inventorywebservices.herokuapp.com/webService/exists?product=";
+    String postUrl = "https://inventorywebservices.herokuapp.com/webService/productInsert";
+    String owners = "https://inventorywebservices.herokuapp.com/webService/owners.json";
 
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    },
-                volleyError -> Toast.makeText(this, volleyError.getMessage(), Toast.LENGTH_SHORT).show()
-        );
-        queue.add(stringRequest);
-    }
+    public List<String> getAll() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(url_fetchall)
+                .build();
 
-    public void post(String n, String q, String p, String o){
-        String postUrl = "https://inventorywebservices.herokuapp.com/webService/productInsert";
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        try (okhttp3.Response response = client.newCall(request).execute()) {
+            List<String> list = new ArrayList<String>();
+            JSONObject obj = new JSONObject(response.body().string());
+            JSONArray array = obj.getJSONArray("Products");
+            for(int i = 0 ; i < array.length() ; i++){
+                list.add(array.getJSONObject(i).getString("Cantidad")+" - "
+                        +array.getJSONObject(i).getString("Id")+" - "
+                        +array.getJSONObject(i).getString("Precio")+" - "
+                        +array.getJSONObject(i).getString("Producto"));
 
-        JSONObject postData = new JSONObject();
-        try {
-            postData.put("nombre", n);
-            postData.put("cantidad", q);
-            postData.put("precio", p);
-            postData.put("owner", o);
+            }
+            return list;
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return null;
+    }
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, postData, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
+    public boolean exists(String name) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                    .url(url_exists+name)
+                    .build();
 
-        requestQueue.add(jsonObjectRequest);
+        try (okhttp3.Response response = client.newCall(request).execute()) {
+            JSONObject obj = new JSONObject(response.body().string());
+            return obj.getBoolean("Exists");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    final OkHttpClient client = new OkHttpClient();
+    public String post(Inventario in) throws IOException {
+        String json = "{\"nombre\": \""+in.getName()+"\", \"cantidad\": "+Integer.toString(in.getCant())+", \"precio\": "+String.valueOf((int)in.getPrice())+", \"owner\": \""+in.getOwner()+"\"}";
+        System.out.println(json);
+        RequestBody body = RequestBody.create(json, JSON);
+        Request request = new Request.Builder()
+                .url(postUrl)
+                .post(body)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
+    public List<String> owners() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(owners)
+                .build();
+
+        try (okhttp3.Response response = client.newCall(request).execute()) {
+            List<String> list = new ArrayList<String>();
+            JSONObject obj = new JSONObject(response.body().string());
+            JSONArray array = obj.getJSONArray("Owners");
+            for(int i = 0 ; i < array.length() ; i++){
+                list.add(array.getJSONObject(i).getString("Name")+" - "
+                        +array.getJSONObject(i).getString("Id"));
+
+            }
+            return list;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

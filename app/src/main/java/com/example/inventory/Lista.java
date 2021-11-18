@@ -17,12 +17,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import com.example.inventory.BO.BOInventario;
+import com.example.inventory.Ctrl.CtrlInventario;
 import com.example.inventory.DAO.DaoInventarioImpl;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,31 +55,16 @@ public class Lista extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        ArrayList<String> ranking = new ArrayList<>();
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://inventorywebservices.herokuapp.com/webService/inventarioDisp.json?user=a";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                response -> {
-                    try {
-                        List<String> list = new ArrayList<String>();
-                        System.out.println("Response is: "+response);
-                        JSONObject obj = new JSONObject(response);
-                        JSONArray array = obj.getJSONArray("Products");
-                        for(int n = 0 ; n < array.length() ; n++){
-                            list.add(array.getJSONObject(n).getString("Cantidad")+" "
-                                    +array.getJSONObject(n).getString("Id")+" "
-                                    +array.getJSONObject(n).getString("Precio")+" "
-                                    +array.getJSONObject(n).getString("Producto"));
+        try {
+            ranking = (ArrayList<String>) CtrlInventario.fetchAll(new BOInventario());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-                        }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-                        lv1.setAdapter(adapter);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },
-                volleyError -> Toast.makeText(this, volleyError.getMessage(), Toast.LENGTH_SHORT).show()
-        );
-        queue.add(stringRequest);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ranking);
+        lv1.setAdapter(adapter);
+
     }
 }

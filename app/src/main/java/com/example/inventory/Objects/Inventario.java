@@ -7,6 +7,7 @@ public class Inventario {
     int cant;
     float price;
     byte[] arr;
+    String Owner;
 
     public Inventario(){
 
@@ -19,10 +20,11 @@ public class Inventario {
         this.price = price;
     }
 
-    public Inventario(String Name, int cant, float price){
+    public Inventario(String Name, int cant, float price, String owner){
         this.Name = Name;
         this.cant = cant;
         this.price = price;
+        this.Owner = owner;
     }
 
     //Constructors
@@ -65,4 +67,8 @@ public class Inventario {
     public void setArr(byte[] arr) {
         this.arr = arr;
     }
+
+    public String getOwner(){ return Owner; }
+
+    public void setOwner(String owner){ this.Owner=owner; }
 }

@@ -2,9 +2,14 @@ package com.example.inventory.BO;
 
 
 import android.content.Context;
+import android.os.StrictMode;
 
 import com.example.inventory.DAO.DaoInventarioImpl;
+import com.example.inventory.DAO.DaoWS;
 import com.example.inventory.Objects.Inventario;
+
+import java.io.IOException;
+import java.util.List;
 
 public class BOInventario{
 
@@ -13,12 +18,12 @@ public class BOInventario{
 
     }
 
-    public String addInventario(Inventario Inventory, DaoInventarioImpl dao) {
-        Inventario q = dao.getInventario(Inventory.getName().toString());
-        if (q != null) {
+    public String addInventario(Inventario Inventory) throws IOException {
+        DaoWS ws = new DaoWS();
+        if (ws.exists(Inventory.getName())) {
             return "El objeto a ingresar ya existe en el inventario";
         } else {
-            dao.addInventario(Inventory);
+            System.out.println("cacorrein "+new DaoWS().post(Inventory));
             return "Ingreso Existoso";
         }
     }
@@ -37,12 +42,16 @@ public class BOInventario{
         return precioVenta;
     }
 
-    public boolean addQr(Inventario Inventory,DaoInventarioImpl dao){
-        return dao.updateInventory(Inventory);
-    }
+//    public boolean addQr(Inventario Inventory,){
+//        return dao.updateInventory(Inventory);
+//    }
 
-    public int retrieveInsertedId(Inventario Inventory, DaoInventarioImpl dao) {
-        return dao.getInventario(Inventory.getName()).getId();
-    }
+//    public int retrieveInsertedId(Inventario Inventory) {
+//        return dao.getInventario(Inventory.getName()).getId();
+//    }
 
+    public List<String> fetchAll() throws IOException {
+        DaoWS ws = new DaoWS();
+        return new DaoWS().getAll();
+    }
 }

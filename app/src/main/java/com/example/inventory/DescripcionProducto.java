@@ -29,11 +29,11 @@ public class DescripcionProducto extends AppCompatActivity {
         if (extras != null) {
             String value = extras.getString("name");
             String[] parts = value.split(" - ");
-            t1.setText(parts[1]);
-            t2.setText(parts[2]);
-            t3.setText(parts[3]);
+            t1.setText(parts[3]);
+            t2.setText(parts[0]);
+            t3.setText(parts[2]);
             BOInventario BOI = new BOInventario();
-            t4.setText(Integer.toString(BOI.calcularPrecioVenta(Float.parseFloat(parts[3]))));
+            t4.setText(Integer.toString(BOI.calcularPrecioVenta(Float.parseFloat(parts[2]))));
         }
     }
 }

@@ -33,6 +33,7 @@ import androidmads.library.qrgenearator.QRGEncoder;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import android.widget.Toast;
 import android.os.Bundle;
@@ -73,7 +74,7 @@ public class Ingresar extends AppCompatActivity {
     }
 
 
-    public void ButtonOnClick(View v) throws WriterException {
+    public void ButtonOnClick(View v) throws WriterException, IOException {
 
         Button button = (Button) v;
         TextInputEditText Cantidad = (TextInputEditText) findViewById(R.id.TextInputEditText);
@@ -193,31 +194,33 @@ public class Ingresar extends AppCompatActivity {
 
     }
 
-    private String Ingresar(String Cantidad, String Precio, String Nombre) {
+    private String Ingresar(String Cantidad, String Precio, String Nombre) throws IOException {
         String msg = CtrlInventario.addInventario(Nombre,
                 Integer.parseInt(Cantidad),
                 Float.parseFloat(Precio),
-                new BOInventario(), db);
+                "a",
+                new BOInventario());
 
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        if (msg.compareTo("El objeto a ingresar ya existe en el inventario") != 0) {
+//        if (msg.compareTo("El objeto a ingresar ya existe en el inventario") != 0) {
+//
+//            int id = CtrlInventario.retrieveInsertedId(Nombre,
+//                    Integer.parseInt(Cantidad),
+//                    Float.parseFloat(Precio),
+//                    new BOInventario());
 
-            int id = CtrlInventario.retrieveInsertedId(Nombre,
-                    Integer.parseInt(Cantidad),
-                    Float.parseFloat(Precio),
-                    new BOInventario(), db);
-
-            Bitmap qr = crearQr(id);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            qr.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] arr = baos.toByteArray();
-
-            boolean b = CtrlInventario.addInventarioQr(id, Nombre,
-                    Integer.parseInt(Cantidad),
-                    Float.parseFloat(Precio),
-                    arr, new BOInventario(), db);
-        }
+//            Bitmap qr = crearQr(id);
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            qr.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//            byte[] arr = baos.toByteArray();
+//
+//            boolean b = CtrlInventario.addInventarioQr(id, Nombre,
+//                    Integer.parseInt(Cantidad),
+//                    Float.parseFloat(Precio),
+//                    arr, new BOInventario());
+//    }
         return msg;
+
     }
 
 }
